@@ -4,7 +4,11 @@ import { asyncHandler } from "../utils/asyncHandler";
 
 // ADD LOG
 export const addLog = asyncHandler(async (req: Request, res: Response) => {
-  const log = await MaintenanceLog.create(req.body);
+  const { date, ...otherData } = req.body;
+  const log = await MaintenanceLog.create({
+    ...otherData,
+    maintenance_date: date
+  });
 
   res.json({ success: true, data: log });
 });
@@ -19,7 +23,7 @@ export const getLogs = asyncHandler(async (req: Request, res: Response) => {
   const formattedLogs = logs.map(log => ({
     id: log.id,
     asset_id: log.asset_id,
-    date: log.maintenance_date,
+    date: log.maintenance_date ? new Date(log.maintenance_date).toISOString() : new Date().toISOString(),
     description: log.description,
     cost: parseFloat(log.cost as any),
     technician: log.technician,

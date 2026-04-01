@@ -30,7 +30,7 @@ const Employees = () => {
 
   // Get assets assigned to a specific employee
   const getAssignedAssets = (employeeId: number) => {
-    return assets.filter((asset: any) => asset.assignedTo === employeeId);
+    return assets.filter((asset: any) => parseInt(asset.assignedTo) === employeeId);
   };
   const [showModal, setShowModal] = useState(false);
 const [editData, setEditData] = useState(null);

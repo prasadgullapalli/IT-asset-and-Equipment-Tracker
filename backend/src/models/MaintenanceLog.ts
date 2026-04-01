@@ -37,12 +37,12 @@ MaintenanceLog.init(
     technician: {
       type: DataTypes.STRING
     },
-   nextMaintenanceDate: {
-  type: DataTypes.DATE
-},
-status: {
-  type: DataTypes.STRING
-}
+    nextMaintenanceDate: {
+      type: DataTypes.DATE
+    },
+    status: {
+      type: DataTypes.STRING
+    }
   },
   {
     sequelize,

@@ -38,6 +38,25 @@ const startServer = async () => {
     await sequelize.sync();
     console.log("✅ Tables synced");
     
+    // Add technician column to maintenance_logs if it doesn't exist
+    try {
+      const [results] = await sequelize.query(`
+        SHOW COLUMNS FROM maintenance_logs LIKE 'technician'
+      `);
+      
+      if (results.length === 0) {
+        await sequelize.query(`
+          ALTER TABLE maintenance_logs 
+          ADD COLUMN technician VARCHAR(255)
+        `);
+        console.log("✅ Technician column added to maintenance_logs");
+      } else {
+        console.log("✅ Technician column already exists in maintenance_logs");
+      }
+    } catch (alterError) {
+      console.log("Error checking/adding technician column:", (alterError as Error).message);
+    }
+    
     app.listen(5000, () => {
       console.log("Server running on port 5000");
     });

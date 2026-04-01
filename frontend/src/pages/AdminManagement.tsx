@@ -14,6 +14,7 @@ interface Admin {
 
 const AdminManagement = () => {
   const [admins, setAdmins] = useState<Admin[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editData, setEditData] = useState<Admin | null>(null);
   const [formData, setFormData] = useState({
@@ -23,7 +24,7 @@ const AdminManagement = () => {
     role: "admin"
   });
 
-  const { user } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
 
   useEffect(() => {
     if (user?.role === "superadmin") {
@@ -32,28 +33,55 @@ const AdminManagement = () => {
   }, [user]);
 
   const fetchAdmins = async () => {
-    try {
-      const res = await api.get("/users");
+  try {
+    setLoading(true);
+
+    const res = await api.get("/users");
+
+    console.log("API Response:", res.data);
+
+    // ✅ FIX HERE
+    if (Array.isArray(res.data)) {
+      setAdmins(res.data);
+    } else if (res.data.data) {
       setAdmins(res.data.data);
-    } catch (error) {
-      console.error("Failed to fetch admins:", error);
+    } else {
+      setAdmins([]);
     }
-  };
+
+  } catch (error: any) {
+    console.error("Failed to fetch admins:", error);
+    setAdmins([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      console.log("Submitting form:", { editData, formData });
+      
       if (editData) {
-        await api.put(`/users/${editData.id}`, formData);
+        console.log("Updating user:", editData.id);
+        const response = await api.put(`/users/${editData.id}`, formData);
+        console.log("Update response:", response);
       } else {
-        await api.post("/users", formData);
+        console.log("Creating new user");
+        const response = await api.post("/users", formData);
+        console.log("Create response:", response);
       }
+      
       setShowModal(false);
       setEditData(null);
       setFormData({ name: "", email: "", password: "", role: "admin" });
-      fetchAdmins();
-    } catch (error) {
+      console.log("Refreshing admin list...");
+      await fetchAdmins(); // Wait for the refresh
+      console.log("Admin list refreshed");
+    } catch (error: any) {
       console.error("Failed to save admin:", error);
+      console.error("Error details:", error.response?.data);
+      alert(`Error: ${error.response?.data?.message || error.message}`);
     }
   };
 
@@ -88,12 +116,32 @@ const AdminManagement = () => {
     setShowModal(true);
   };
 
+  if (authLoading) {
+    return (
+      <Layout>
+        <div className="text-center py-10">
+          <p>Loading...</p>
+        </div>
+      </Layout>
+    );
+  }
+
   if (user?.role !== "superadmin") {
     return (
       <Layout>
         <div className="text-center py-10">
           <h1 className="text-2xl font-bold text-red-600">Access Denied</h1>
           <p>You don't have permission to access this page.</p>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="text-center py-10">
+          <p>Loading admins...</p>
         </div>
       </Layout>
     );
