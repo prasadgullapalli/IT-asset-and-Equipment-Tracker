@@ -1,3 +1,4 @@
+import React from "react";
 import Layout from "../components/Layout";
 import { useEffect, useState } from "react";
 import api from "../services/api";
@@ -144,7 +145,6 @@ const Assets = () => {
           <option value="">All Status</option>
           <option value="Available">Available</option>
           <option value="Assigned">Assigned</option>
-          <option value="Retired">Retired</option>
         </select>
 
         <button
@@ -175,9 +175,9 @@ const Assets = () => {
 
           <tbody>
             {filteredAssets.map((a) => (
-              <>
+              <React.Fragment key={a.id}>
                 {/* MAIN ROW */}
-                <tr key={a.id} className="text-center border-t">
+                <tr key={`main-${a.id}`} className="text-center border-t">
 
                   <td className="p-2 font-medium">{a.name}</td>
                   <td>{a.assetTag}</td>
@@ -267,7 +267,7 @@ const Assets = () => {
 
                 {/* EXPANDED ROW */}
                 {expandedRow === a.id && (
-                  <tr>
+                  <tr key={`expanded-${a.id}`}>
                     <td colSpan={7} className="bg-gray-50 p-4 text-left">
 
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
@@ -331,7 +331,7 @@ const Assets = () => {
                   </tr>
                 )}
 
-              </>
+              </React.Fragment>
             ))}
           </tbody>
 
