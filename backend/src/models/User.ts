@@ -6,7 +6,7 @@ class User extends Model {
   public name!: string;
   public email!: string;
   public password!: string;
-  public role!: "admin" | "superadmin";
+  public role!: "admin" | "super admin";
   public isActive!: boolean;
   public lastLogin!: Date;
 }

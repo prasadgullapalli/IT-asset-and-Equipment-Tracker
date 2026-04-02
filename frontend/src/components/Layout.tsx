@@ -11,61 +11,61 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
       {/* SIDEBAR */}
       <div className="w-64 bg-blue-600 text-white p-5">
-        <h2 className="text-xl font-bold mb-6">IT Tracker</h2>
+        <h2 className="text-xl font-bold mb-6">IT Asset & Equipment Tracker</h2>
 
         {/* User Info */}
         {user && (
-          <div className="mb-6 p-3 bg-blue-700 rounded">
-            <p className="text-sm font-medium">{user.name}</p>
-            <p className="text-xs opacity-80 capitalize">{user.role}</p>
+          <div className="mb-6 p-4 bg-gradient-to-r from-blue-700 to-blue-800 rounded-lg shadow-md border-l-4 border-white hover:shadow-lg transition duration-200">
+            <p className="text-sm font-bold text-white">👤 {user.name}</p>
+            <p className="text-xs opacity-90 capitalize mt-1 font-semibold text-blue-100">    {user.role}</p>
           </div>
         )}
 
-        <ul className="space-y-4">
+        <ul className="space-y-2">
           <li
-            className="cursor-pointer hover:bg-blue-700 p-2 rounded"
+            className="cursor-pointer hover:bg-blue-500 hover:shadow-lg hover:scale-105 p-3 rounded-lg transition duration-200 ease-in-out transform border-l-4 border-transparent hover:border-white hover:pl-4"
             onClick={() => navigate("/dashboard")}
           >
-            Dashboard
+             Dashboard
           </li>
 
           <li
-            className="cursor-pointer hover:bg-blue-700 p-2 rounded"
+            className="cursor-pointer hover:bg-blue-500 hover:shadow-lg hover:scale-105 p-3 rounded-lg transition duration-200 ease-in-out transform border-l-4 border-transparent hover:border-white hover:pl-4"
             onClick={() => navigate("/employees")}
           >
-            Employees
+             Employees
           </li>
 
           <li
-            className="cursor-pointer hover:bg-blue-700 p-2 rounded"
+            className="cursor-pointer hover:bg-blue-500 hover:shadow-lg hover:scale-105 p-3 rounded-lg transition duration-200 ease-in-out transform border-l-4 border-transparent hover:border-white hover:pl-4"
             onClick={() => navigate("/assets")}
           >
-            Assets
+             Assets
           </li>
 
           <li
-            className="cursor-pointer hover:bg-blue-700 p-2 rounded"
+            className="cursor-pointer hover:bg-blue-500 hover:shadow-lg hover:scale-105 p-3 rounded-lg transition duration-200 ease-in-out transform border-l-4 border-transparent hover:border-white hover:pl-4"
             onClick={() => navigate("/maintenance")}
           >
-            Maintenance
+             Maintenance
           </li>
 
           {/* SuperAdmin Only */}
           {user?.role === "superadmin" && (
             <li
-              className="cursor-pointer hover:bg-blue-700 p-2 rounded bg-blue-800"
+              className="cursor-pointer hover:bg-blue-400 hover:shadow-lg hover:scale-105 p-3 rounded-lg bg-blue-800 transition duration-200 ease-in-out transform border-l-4 border-yellow-400 hover:border-yellow-300 hover:pl-4"
               onClick={() => navigate("/admin-management")}
             >
-              Manage Admins
+               Manage Admins
             </li>
           )}
         </ul>
 
         <button
           onClick={logout}
-          className="mt-10 bg-red-500 px-4 py-2 rounded w-full"
+          className="mt-10 bg-red-500 hover:bg-red-600 hover:shadow-lg transition duration-200 px-4 py-3 rounded-lg w-full font-medium transform hover:scale-105"
         >
-          Logout
+           Logout
         </button>
       </div>
 

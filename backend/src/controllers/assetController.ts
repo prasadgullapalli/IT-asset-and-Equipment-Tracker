@@ -11,12 +11,12 @@ export const createAsset = asyncHandler(async (req: Request, res: Response) => {
 
 // GET ALL + FILTER
 export const getAssets = asyncHandler(async (req: Request, res: Response) => {
-  const { type, condition } = req.query;
+  const { type, condition ,status} = req.query;
 
   const where: any = {};
   if (type) where.type = type;
   if (condition) where.condition = condition;
-
+  if (status) where.status=status;
   const assets = await Asset.findAll({ where });
 
   res.json({ success: true, data: assets });

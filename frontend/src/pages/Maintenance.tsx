@@ -83,69 +83,103 @@ const Maintenance = () => {
     }
   };
 
+  // Calculate statistics
+  const totalCost = logs.reduce((sum, log) => sum + log.cost, 0);
+  const totalMaintenances = logs.length;
+
   return (
     <Layout>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Maintenance Logs</h1>
-        <button
-          onClick={() => setShowModal(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          + Add Maintenance Log
-        </button>
-      </div>
-
-      {/* Asset Selector */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium mb-2">Select Asset</label>
-        <select
-          value={selectedAsset || ""}
-          onChange={(e) => setSelectedAsset(parseInt(e.target.value) || null)}
-          className="p-2 border rounded w-64"
-        >
-          <option value="">Select an asset...</option>
-          {assets.map((asset) => (
-            <option key={asset.id} value={asset.id}>
-              {asset.name} ({asset.assetTag})
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Maintenance Logs */}
-      {selectedAsset && (
-        <div className="bg-white p-6 rounded shadow">
-          <h2 className="text-xl font-semibold mb-4">Maintenance History</h2>
-          {logs.length === 0 ? (
-            <p className="text-gray-500">No maintenance logs found for this asset.</p>
-          ) : (
-            <div className="space-y-4">
-              {logs.map((log) => (
-                <div key={log.id} className="border rounded p-4">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Date</p>
-                      <p>{new Date(log.date).toLocaleDateString()}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Technician</p>
-                      <p>{log.technician}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Cost</p>
-                      <p>₹{log.cost}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Description</p>
-                      <p className="text-sm">{log.description}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+      <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+        
+        {/* HEADER */}
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-800">Maintenance Logs</h1>
+            <p className="text-gray-600 mt-1">Track and manage asset maintenance records</p>
+          </div>
+          <button
+            onClick={() => setShowModal(true)}
+            className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg shadow-lg transition duration-200 font-medium"
+          >
+             Add Maintenance Log
+          </button>
         </div>
-      )}
+
+        {/* Asset Selector and Stats */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Asset Selector */}
+          <div className="lg:col-span-2 bg-white rounded-xl shadow-md p-6">
+            <label className="block text-sm font-semibold text-gray-700 mb-3">Select Asset</label>
+            <select
+              value={selectedAsset || ""}
+              onChange={(e) => setSelectedAsset(parseInt(e.target.value) || null)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+            >
+              <option value=""> Select an asset...</option>
+              {assets.map((asset) => (
+                <option key={asset.id} value={asset.id}>
+                  {asset.name} ({asset.assetTag})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
+            <p className="text-gray-600 text-sm font-medium">Maintenance Stats</p>
+            <div className="mt-3">
+              <p className="text-2xl font-bold text-gray-800">{totalMaintenances}</p>
+              <p className="text-xs text-gray-600 mt-1">Total Maintenance Records</p>
+              <p className="text-lg font-semibold text-blue-600 mt-2">₹{totalCost.toFixed(2)}</p>
+              <p className="text-xs text-gray-600">Total Cost</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Maintenance Logs */}
+        {selectedAsset ? (
+          <div className="bg-white rounded-xl shadow-md overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+              <h2 className="text-lg font-bold text-white">🔧 Maintenance History ({logs.length})</h2>
+            </div>
+            <div className="p-6">
+              {logs.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-gray-500 text-lg"> No maintenance logs found for this asset.</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {logs.map((log) => (
+                    <div key={log.id} className="border border-gray-200 rounded-lg p-5 hover:shadow-md transition duration-200 bg-gray-50">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div className="border-l-4 border-blue-500 pl-4">
+                          <p className="text-xs font-semibold text-gray-600 uppercase">Date</p>
+                          <p className="text-lg font-bold text-gray-800 mt-1">{new Date(log.date).toLocaleDateString()}</p>
+                        </div>
+                        <div className="border-l-4 border-green-500 pl-4">
+                          <p className="text-xs font-semibold text-gray-600 uppercase"> Technician</p>
+                          <p className="text-lg font-bold text-gray-800 mt-1">{log.technician}</p>
+                        </div>
+                        <div className="border-l-4 border-purple-500 pl-4">
+                          <p className="text-xs font-semibold text-gray-600 uppercase"> Cost</p>
+                          <p className="text-lg font-bold text-purple-600 mt-1">₹{log.cost.toFixed(2)}</p>
+                        </div>
+                        <div className="border-l-4 border-yellow-500 pl-4">
+                          <p className="text-xs font-semibold text-gray-600 uppercase"> Description</p>
+                          <p className="text-sm text-gray-700 mt-1 line-clamp-2">{log.description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="bg-white rounded-xl shadow-md p-12 text-center">
+            <p className="text-gray-500 text-lg">👆 Please select an asset to view maintenance history</p>
+          </div>
+        )}
 
       {/* Add Maintenance Modal */}
       {showModal && (
@@ -232,6 +266,8 @@ const Maintenance = () => {
           </div>
         </div>
       )}
+
+    </div>
     </Layout>
   );
 };
