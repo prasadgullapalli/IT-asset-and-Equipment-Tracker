@@ -90,12 +90,12 @@ const AssetForm = ({ onClose, refresh, editData }: any) => {
             className="w-full p-2 border rounded"
             onChange={handleChange} value={form.model} />
           
-          <label className="block mb-1">Purchase Date</label>
+          <label className="block text-sm font-medium mb-1">Purchase Date</label>
           <input type="date" name="purchaseDate"
             className="w-full p-2 border rounded"
             onChange={handleChange} value={form.purchaseDate} />
           
-          <label className="block mb-1">Warranty Date</label>
+          <label className="block text-sm font-medium mb-1">Warranty Date</label>
           <input type="date" name="warrantyDate"
             className="w-full p-2 border rounded"
             onChange={handleChange} value={form.warrantyDate} />
