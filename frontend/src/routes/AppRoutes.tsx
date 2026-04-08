@@ -6,14 +6,16 @@ import Assets from "../pages/Assets";         // ✅ added
 import AdminManagement from "../pages/AdminManagement"; // ✅ added
 import Maintenance from "../pages/Maintenance"; // ✅ added
 import PrivateRoute from "./PrivateRoute";
-
+import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
 const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
         {/* Public Route */}
         <Route path="/" element={<Login />} />
-
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+<Route path="/reset-password" element={<ResetPassword />} />
         {/* Protected Routes */}
         <Route
           path="/dashboard"

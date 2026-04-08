@@ -9,6 +9,8 @@ class User extends Model {
   public role!: "admin" | "super admin";
   public isActive!: boolean;
   public lastLogin!: Date;
+  public otp?: string;
+public otpExpiry?: Date;
 }
 
 User.init(
@@ -44,7 +46,15 @@ User.init(
     },
     lastLogin: {
       type: DataTypes.DATE
-    }
+    },
+    otp: {
+  type: DataTypes.STRING,
+  allowNull: true
+},
+otpExpiry: {
+  type: DataTypes.DATE,
+  allowNull: true
+}
   },
   {
     sequelize,
