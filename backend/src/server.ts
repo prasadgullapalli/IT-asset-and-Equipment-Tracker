@@ -35,7 +35,7 @@ const startServer = async () => {
   try {
     await connectDB(); // ✅ from db.ts
     
-    await sequelize.sync();;
+    await sequelize.sync();
     console.log("✅ Tables synced");
     
     // Add technician column to maintenance_logs if it doesn't exist
