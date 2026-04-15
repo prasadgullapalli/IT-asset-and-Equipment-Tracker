@@ -4,7 +4,7 @@ import "./models/User";
 import "./models/Employee";
 import "./models/Asset";
 import "./models/MaintenanceLog";
-import "./models/AssetAssignment";// ✅ important to load model
+import "./models/AssetAssignment";
 import authRoutes from "./routes/authRoutes";
 import { protect } from "./middleware/authMiddleware";
 import userRoutes from "./routes/userRoutes";

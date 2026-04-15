@@ -30,16 +30,18 @@ const Maintenance = () => {
     technician: "",
     date: new Date().toISOString().split('T')[0]
   });
+ const [minCost, setMinCost] = useState("");
+const [maxCost, setMaxCost] = useState("");
 
   useEffect(() => {
     fetchAssets();
   }, []);
 
   useEffect(() => {
-    if (selectedAsset) {
-      fetchLogs(selectedAsset);
-    }
-  }, [selectedAsset]);
+  if (selectedAsset) {
+    fetchLogs(selectedAsset);
+  }
+}, [selectedAsset, minCost, maxCost]);
 
   const fetchAssets = async () => {
     try {
@@ -51,13 +53,18 @@ const Maintenance = () => {
   };
 
   const fetchLogs = async (assetId: number) => {
-    try {
-      const res = await api.get(`/maintenance/${assetId}`);
-      setLogs(res.data.data);
-    } catch (error) {
-      console.error("Failed to fetch maintenance logs:", error);
-    }
-  };
+  try {
+    const res = await api.get(`/maintenance/${assetId}`, {
+      params: {
+        minCost,
+        maxCost
+      }
+    });
+    setLogs(res.data.data);
+  } catch (error) {
+    console.error("Failed to fetch maintenance logs:", error);
+  }
+};
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,6 +130,29 @@ const Maintenance = () => {
               ))}
             </select>
           </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+  <div>
+    <label className="text-sm font-semibold">Min Cost (₹)</label>
+    <input
+      type="number"
+      value={minCost}
+      onChange={(e) => setMinCost(e.target.value)}
+      className="w-full px-3 py-2 border rounded"
+      placeholder="0"
+    />
+  </div>
+
+  <div>
+    <label className="text-sm font-semibold">Max Cost (₹)</label>
+    <input
+      type="number"
+      value={maxCost}
+      onChange={(e) => setMaxCost(e.target.value)}
+      className="w-full px-3 py-2 border rounded"
+      placeholder="10000"
+    />
+  </div>
+</div>
 
           {/* Quick Stats */}
           <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
